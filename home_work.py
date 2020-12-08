@@ -17,7 +17,13 @@ def virt_mem():
     memory = psutil.virtual_memory()
     swap = psutil.swap_memory()
     a = 10 ** 6
-    res = {"virtual":{'total': memory.total, 'used': memory.used, 'free': memory.free},"swap":{'total': swap.total, 'used': swap.used, 'free':swap.free}}
+    res = {
+        "virtual":
+        {'total': memory.total, 'used': memory.used, 'free': memory.free},
+        "swap":
+        {'total': swap.total, 'used': swap.used, 'free':swap.free}
+
+        }
     for keys,value in res["virtual"].items():
         res["virtual"][keys] = value / a 
     for keys,value in res["swap"].items():
@@ -49,17 +55,12 @@ def run_proc():
     return proces
 
 
-def netif_keys():
-    net_if_addr = list(psutil.net_if_addrs().keys())
-    return net_if_addr
-
-def netif_values():
-    net_addr = list(psutil.net_if_addrs().values())
-    return net_addr
-
 def sensor_batery():
     baterry = psutil.sensors_battery()
-    res = {"sbatery": {"percent": baterry.percent, "power_plugged": baterry.power_plugged}}
+    res = {
+        "sbatery": 
+    {"percent": baterry.percent, "power_plugged": baterry.power_plugged}
+        }
     return res
 
 def show():
@@ -82,6 +83,7 @@ def show():
         disk_head = TEMPL_DISK_HEAD.format("Device:"+i)
         
         disk_inf = TEMPL_DISK.format(j,(d_u.total/num),(d_u.used/num),(d_u.free/num))
+
         print(disk_head,end='\n\n')
         print(disk_inf, end='\n\n')
         time.sleep(0.5)
@@ -101,8 +103,8 @@ def show():
 
     start_network = HEAD_START.format("Сетевые интерфейсы")
     print(start_network,end='\n\n')
-    net_if = netif_keys()
-    for i, j in zip(list(psutil.net_if_addrs().keys()), list(psutil.net_if_addrs().values())):
+    for i, j in zip(list(psutil.net_if_addrs().keys()), 
+                    list(psutil.net_if_addrs().values())):
           name_net_if = TEMPLATE_NET_HEAD.format("Name interface:" + i)
           res = {
               "address": j[0].address ,
