@@ -102,7 +102,7 @@ def show():
     start_network = HEAD_START.format("Сетевые интерфейсы")
     print(start_network,end='\n\n')
     net_if = netif_keys()
-    for i, j in zip(net_if, list(psutil.net_if_addrs().values())):
+    for i, j in zip(list(psutil.net_if_addrs().keys()), list(psutil.net_if_addrs().values())):
           name_net_if = TEMPLATE_NET_HEAD.format("Name interface:" + i)
           res = {
               "address": j[0].address ,
