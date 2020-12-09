@@ -9,7 +9,7 @@ TEMPL_DISK_HEAD = "|{:_^150}|"
 TEMPL_DISK = "Mountpoint -> {:<30}\tTotal(Gb):{:<30}\tUsed(Gb):{:<30}\tFree(Gb):{:<30}"
 HEAD_PROCES = "{name:<25}\t{pid:<5}\t{username:<10}\t"
 TEMPLATE_PROCES = "{:<25}\t{:<5}\t{:<10}\t"
-TEMPLATE_NET_HEAD = "{:^10}"
+ТEMPLATE_NETWORK = "interface:{interface:<10}\naddress:{address:<10}\tnetmask:{netmask:}\tbroadcast:{broadcast:}\n"
 TEMPLATE_SEN_BAT = "Percent:{percent}%\tPower-plugged:{power_plugged}"
 
 
@@ -22,7 +22,7 @@ def virt_mem():
         {'total': memory.total, 'used': memory.used, 'free': memory.free},
         "swap":
         {'total': swap.total, 'used': swap.used, 'free':swap.free}
-
+        
         }
     for keys,value in res["virtual"].items():
         res["virtual"][keys] = value / a 
@@ -103,18 +103,16 @@ def show():
 
     start_network = HEAD_START.format("Сетевые интерфейсы")
     print(start_network,end='\n\n')
-    for i, j in zip(list(psutil.net_if_addrs().keys()), 
-                    list(psutil.net_if_addrs().values())):
-          name_net_if = TEMPLATE_NET_HEAD.format("Name interface:" + i)
-          res = {
-              "address": j[0].address ,
-              "netmask": j[0].netmask ,
-              "broadcast":j[0].broadcast
+    for keys,values in psutil.net_if_addrs().items():
+        net_inf = {
+              "interface": keys,
+              "address": values[0].address ,
+              "netmask": values[0].netmask ,
+              "broadcast":values[0].broadcast
             }
-          res_if = "address:{address:<10}\tnetmask:{netmask:}\tbroadcast:{broadcast:}\n".format(**res)
-          print(name_net_if)
-          print(res_if)
-          time.sleep(0.5)
+        network_info = ТEMPLATE_NETWORK.format(**net_inf)
+        print(network_info)
+        time.sleep(0.5)
 
 
     start_sensor = HEAD_START.format("Датчики")
