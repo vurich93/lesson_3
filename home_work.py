@@ -10,7 +10,9 @@ TEMPL_DISK = "Mountpoint -> {:<30}\tTotal(Gb):{:<30}\tUsed(Gb):{:<30}\tFree(Gb):
 HEAD_PROCES = "{name:<25}\t{pid:<5}\t{username:<10}\t"
 TEMPLATE_PROCES = "{:<25}\t{:<5}\t{:<10}\t"
 ТEMPLATE_NETWORK = "interface:{interface:<10}\naddress:{address:<10}\tnetmask:{netmask:}\tbroadcast:{broadcast:}\n"
-TEMPLATE_SEN_BAT = "Percent:{percent}%\tPower-plugged:{power_plugged}"
+ТEMPLATE_TEMP = "Name:{Name:}\ncurrent(℃ ):{current:}\thigh(℃ ):{high:}\tcritical(℃ ):{critical:}\n"
+ТEMPLATE_TEMP_Core = "Name:{Name:}\nlabel:{label:<10}\tcurrent(℃ ):{current:<10}\thigh(℃ ):{high:<10}\tcritical(℃ ):{critical:<10}\n"
+# TEMPLATE_SEN_BAT = "Percent:{percent}%\tPower-plugged:{power_plugged}"
 
 
 def virt_mem():
@@ -115,11 +117,37 @@ def show():
         time.sleep(0.5)
 
 
-    start_sensor = HEAD_START.format("Датчики")
-    print(start_sensor,end='\n\n')
-    sen_bat = sensor_batery()
-    batery_info = TEMPLATE_SEN_BAT.format(**sen_bat["sbatery"])
-    print(batery_info)
+    start_sensor = HEAD_START.format("Датчики температуры")
+    # print(start_sensor,end='\n\n')
+    # sen_bat = sensor_batery()
+    # batery_info = TEMPLATE_SEN_BAT.format(**sen_bat["sbatery"])
+    # print(batery_info)
+    for keys,values in psutil.sensors_temperatures().items():
+        if keys == 'coretemp':
+            for i in psutil.sensors_temperatures()['coretemp']:
+                res = {
+                "Name": keys,
+                "label": i.label,
+                "current": i.current,
+                "high": i.high,
+                "critical": i.critical
+
+                    }
+                res_if = ТEMPLATE_TEMP_Core.format(**res)
+                print(res_if)
+                time.sleep(0.5)
+
+        else:
+            res = {
+              "Name": keys,
+              "current": values[0].current,
+              "high": values[0].high,
+              "critical":values[0].critical
+                }
+ 
+            res_if = ТEMPLATE_TEMP.format(**res)
+            print(res_if, end='\n\n')
+            time.sleep(0.5)
 
 
 if __name__ == "__main__":
