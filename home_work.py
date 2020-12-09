@@ -12,7 +12,6 @@ TEMPLATE_PROCES = "{:<25}\t{:<5}\t{:<10}\t"
 ТEMPLATE_NETWORK = "interface:{interface:<10}\naddress:{address:<10}\tnetmask:{netmask:}\tbroadcast:{broadcast:}\n"
 ТEMPLATE_TEMP = "Name:{Name:}\ncurrent(℃ ):{current:}\thigh(℃ ):{high:}\tcritical(℃ ):{critical:}\n"
 ТEMPLATE_TEMP_Core = "Name:{Name:}\nlabel:{label:<10}\tcurrent(℃ ):{current:<10}\thigh(℃ ):{high:<10}\tcritical(℃ ):{critical:<10}\n"
-# TEMPLATE_SEN_BAT = "Percent:{percent}%\tPower-plugged:{power_plugged}"
 
 
 def virt_mem():
@@ -118,10 +117,6 @@ def show():
 
 
     start_sensor = HEAD_START.format("Датчики температуры")
-    # print(start_sensor,end='\n\n')
-    # sen_bat = sensor_batery()
-    # batery_info = TEMPLATE_SEN_BAT.format(**sen_bat["sbatery"])
-    # print(batery_info)
     for keys,values in psutil.sensors_temperatures().items():
         if keys == 'coretemp':
             for i in psutil.sensors_temperatures()['coretemp']:
